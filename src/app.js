@@ -60,6 +60,18 @@ if (config.env === 'production') {
 // v1 api routes
 app.use('/v1', routes);
 
+const path = require('path')
+// Middleware for serving '/dist' directory
+app.use(express.static(path.join(__dirname, 'dist')));
+
+// app.all("*", (_req, res) => {
+//   try {
+//     res.sendFile(__dirname + '/dist/index.html');
+//   } catch (error) {
+//     res.json({ success: false, message: "Something went wrong" });
+//   }
+// });
+
 // send back a 404 error for any unknown api request
 app.use((req, res, next) => {
   next(new ApiError(httpStatus.NOT_FOUND, 'Not found'));
