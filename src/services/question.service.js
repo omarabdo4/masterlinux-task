@@ -9,15 +9,33 @@ const { Question } = require('../models');
  */
 const queryFiveRandomQuestions = async () => {
   const allQuestionsIds = await Question.find({},{"_id":1})
-  const fiveRandomIds = shuffleArray(allQuestionsIds).slice(0, 5)
-
+  const fiveRandomIds = (shuffleArray(allQuestionsIds)).slice(0, 5)
+  
   const fiveRandomQuestions = await Question.find({"_id":{$in:fiveRandomIds}})
 
   return fiveRandomQuestions;
 };
 
+/**
+ * Query for Score
+ * @returns {Promise<QueryResult>}
+ */
+const getScore = async (answers) => {
+  var correctNo = 0
+  for (const answer of answers) {
+    const question = await Question.findOne({"_id":answer.questionId})
+    for (const qanswer of question.answers) {
+      if(qanswer._id == answer.answerId && qanswer.isCorrect){
+        correctNo = correctNo + 1
+      }
+    }
+
+  }
+  return correctNo;
+};
 
 
 module.exports = {
-    queryFiveRandomQuestions
+    queryFiveRandomQuestions,
+    getScore
 }

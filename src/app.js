@@ -14,6 +14,13 @@ const routes = require('./routes/v1');
 const { errorConverter, errorHandler } = require('./middlewares/error');
 const ApiError = require('./utils/ApiError');
 
+const catchAsync = require('./utils/catchAsync');
+const { questionsSeeder } = require('./seeders');
+
+catchAsync(async (req, res) => {
+  await questionsSeeder()
+})()
+
 const app = express();
 
 if (config.env !== 'test') {

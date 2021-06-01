@@ -8,4 +8,9 @@ router
   .route('/')
   .get(questionController.getFiveQuestions);
 
+router
+  .route('/answers')
+  .post(questionController.getScore);
+
+
 module.exports = router;
